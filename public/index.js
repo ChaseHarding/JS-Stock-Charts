@@ -66,6 +66,36 @@ async function main() {
     },
   });
 
+
+  //I learned the bar chart was not a bonus :'(
+    //here we go, please forgive me
+
+  new Chart(highestPriceChartCanvas.getContext("2d"), {
+    type: "bar",
+    data: {
+      labels: stocks.map(stock => stock.meta.symbol),
+      datasets: [{
+        label: "Highest Prices",
+        //map creates the array
+        //for each stock we map the 'values' array of that stock, so we're grabbing the highest prices
+        //the '...' is a spread operator that spreads the array into individual arguments to the Math.max
+        //the outer map is collecting the max high prices and that array ill use as the data for the chart
+        data: stocks.map(stock => Math.max(...stock.values.map(value => parseFloat(value.high)))),
+        backgroundColor: stocks.map(stock => getColor(stock.meta.symbol)),
+        borderColor: stocks.map(stock => getColor(stock.meta.symbol)),
+      }]
+    },
+    //need this via charts documentation
+    //this is such an insane way to say i want just a y axis that starts at zero lol
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+   
   console.log(stocks[0].values);
   //this assignment was kinder than the book store
 }
